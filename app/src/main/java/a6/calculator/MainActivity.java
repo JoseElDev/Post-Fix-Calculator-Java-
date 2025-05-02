@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import a6.calculator.model.StackCalculator;
 import a6.calculator.controller.CalculationController;
 import a6.calculator.controller.DisplayStates;
+import a6.calculator.view.CalculatorView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
         TextView displayView = findViewById(R.id.display);
         TextView stackView = findViewById(R.id.stack);
 
+        CalculatorView cv = new CalculatorView(displayView, stackView);
         StackCalculator sc = new StackCalculator();
-        DisplayStates ds = null;
-        CalculationController cc = new CalculationController(sc, displayView, stackView, null);
+        CalculationController cc = new CalculationController(sc, cv, DisplayStates.INPUT);
 
         // Instantiate Buttons
         Button zeroButton = findViewById(R.id.zero);

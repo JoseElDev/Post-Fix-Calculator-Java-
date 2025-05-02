@@ -1,32 +1,28 @@
 package a6.calculator.controller;
 
-import android.widget.TextView;
 import a6.calculator.model.StackCalculator;
-import a6.calculator.model.NotEnoughArgumentsException;
-import a6.calculator.model.OverflowException;
-import a6.calculator.model.DivisionByZeroException;
-import a6.calculator.model.Operation;
-
+import a6.calculator.view.CalculatorView;
+import a6.calculator.model.*;
 
 public class CalculationController {
     private final StackCalculator calculator;
+    private final CalculatorView view;
     private DisplayStates displayState;
     private String input;
-    private final TextView displayView;
-    private final TextView stackView;
 
-    public CalculationController(StackCalculator calculator, TextView displayView, TextView stackView, DisplayStates initialState) {
+
+    public CalculationController(StackCalculator calculator, CalculatorView view, DisplayStates initialState) {
         this.calculator = calculator;
-        this.displayView = displayView;
-        this.stackView = stackView;
+        this.view = view;
         this.displayState = initialState;
         this.input = "0";
     }
 
+    // Handles the digit buttons on the calculator.
     public void inputDigit(int d) {
         if (displayState != DisplayStates.INPUT) {
             input = String.valueOf(d);
-            displayState  = DisplayStates.INPUT;
+            displayState = DisplayStates.INPUT;
         } else {
             if (input.equals("0")) {
                 input = String.valueOf(d);
@@ -34,13 +30,14 @@ public class CalculationController {
                 input = input + d;
             }
         }
-        displayView.setText(input + "_");
-        updateStackView();
+        view.displayInput(input);
+        view.displayStack(calculator);
     }
 
+    // Pushes digits to the stack.
     private void inputPush() throws OverflowException {
         try {
-            String text = displayView.getText().toString();
+            String text = input;
             if (text.endsWith("_")) {
                 text = text.substring(0, text.length() - 1);
             }
@@ -51,20 +48,18 @@ public class CalculationController {
         }
     }
 
-    private void updateStackView() {
-        StringBuilder sb = new StringBuilder();
-        for (Integer val : calculator) {
-            sb.append(val).append(" ");
-        }
-        stackView.setText(sb.toString().trim());
-    }
-
+    // Updates both of the displays.
     private void setDisplay(String text, DisplayStates state) {
         this.displayState = state;
-        displayView.setText(text);
-        updateStackView();
+        if (state == DisplayStates.ERROR) {
+            view.displayError(text);
+        } else {
+            view.displayResult(text);
+        }
+        view.displayStack(calculator);
     }
 
+    // Performs a given operation.
     public void performOperation(Operation op) {
         if (displayState == DisplayStates.INPUT) {
             try {
@@ -90,6 +85,7 @@ public class CalculationController {
         }
     }
 
+    // Handles the Enter button. It tries to push the number and checks for overflow.
     public void inputEnter() {
         if (displayState == DisplayStates.INPUT) {
             try {
@@ -100,10 +96,11 @@ public class CalculationController {
             }
         } else if (displayState == DisplayStates.STACK) {
             calculator.push(calculator.peek());
-            updateStackView();
+            view.displayStack(calculator);
         }
     }
 
+    // Handles the +/- button.
     public void inputPlusMinus() {
         if (displayState == DisplayStates.INPUT) {
             if (input.startsWith("-")) {
@@ -118,6 +115,7 @@ public class CalculationController {
         }
     }
 
+    // Handles the Clear button. It clears the stack and sets the display to "0_".
     public void inputClear() {
         calculator.clear();
         input = "0";
