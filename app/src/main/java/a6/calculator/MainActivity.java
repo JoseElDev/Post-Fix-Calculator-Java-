@@ -15,8 +15,19 @@ import a6.calculator.controller.CalculationController;
 import a6.calculator.controller.DisplayStates;
 import a6.calculator.view.CalculatorView;
 
+/**
+ * The MainActivity class that initializes and sets up the calculator interface,
+ * handling user interactions through buttons and displays.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    
+    /**
+     * Called when the activity is started. Initializes UI components and sets up event listeners.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after being previously
+     *                           shut down, this bundle contains the most recently saved data.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
