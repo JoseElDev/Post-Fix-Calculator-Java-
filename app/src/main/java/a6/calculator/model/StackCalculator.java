@@ -2,7 +2,17 @@ package a6.calculator.model;
 
 import java.util.LinkedList;
 
+/**
+ * A stack based calculator that has basic arithmetic operations.
+ */
 public class StackCalculator extends LinkedList<Integer> {
+
+    /**
+     * Adds the top two numbers on the stack and pushes the result back.
+     *
+     * @throws NotEnoughArgumentsException if there are fewer than two numbers in the stack.
+     * @throws OverflowException if the addition result exceeds the allowable range.
+     */
     public void add() throws NotEnoughArgumentsException, OverflowException {
         // Check for NotEnoughArgumentsException
         if (this.size() < 2) {
@@ -24,6 +34,12 @@ public class StackCalculator extends LinkedList<Integer> {
         this.push(sum);
     }
 
+    /**
+     * Subtracts the second number from the first number on the stack and pushes the result back.
+     *
+     * @throws NotEnoughArgumentsException if there are fewer than two numbers in the stack.
+     * @throws OverflowException if the subtraction result exceeds the allowable range.
+     */
     public void subtract() throws NotEnoughArgumentsException, OverflowException  {
         // Check for NotEnoughArgumentsException
         if (this.size() < 2) {
@@ -44,6 +60,12 @@ public class StackCalculator extends LinkedList<Integer> {
         this.push(difference);
     }
 
+    /**
+     * Multiplies the top two numbers on the stack and pushes the result back.
+     *
+     * @throws NotEnoughArgumentsException if there are fewer than two numbers in the stack.
+     * @throws OverflowException if the multiplication result exceeds the allowable range.
+     */
     public void multiply() throws NotEnoughArgumentsException, OverflowException {
         // Check for NotEnoughArgumentsException
         if (this.size() < 2) {
@@ -64,6 +86,13 @@ public class StackCalculator extends LinkedList<Integer> {
         this.push(product);
     }
 
+    /**
+     * Divides the first number by the second number on the stack and pushes the result back.
+     *
+     * @throws NotEnoughArgumentsException if there are fewer than two numbers in the stack.
+     * @throws DivisionByZeroException if division by zero is attempted.
+     * @throws OverflowException if the division result exceeds the allowable range.
+     */
     public void divide() throws NotEnoughArgumentsException, DivisionByZeroException, OverflowException {
         // Check for NotEnoughArgumentsException
         if (this.size() < 2) {
